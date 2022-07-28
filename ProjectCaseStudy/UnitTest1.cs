@@ -42,25 +42,26 @@ namespace ProjectCaseStudy
     {
         protected abstract JsonIO<T> IO { get; }
         protected abstract string FilePath { get; }
-
+        
         public TestDataBase()
         {
-            var data = IO.LoadFile(FilePath);
+            var data = IO.LoadFile(FilePath, 20000);
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 20000; i++)
             {
                 Add(data[i]);
             }
         }
-
     }
 
     public class TestDataJobTitle : TestDataBase<JobTitleData>
     {
         private readonly JobTitleIO _io = new();
+
         protected override JsonIO<JobTitleData> IO => _io;
 
         protected override string FilePath => "Data\\data.json";
+
     }
 
     public class TestDataBuzz : TestDataBase<BuzzPost>
@@ -75,7 +76,6 @@ namespace ProjectCaseStudy
     {
         private readonly EmployeeIO _io = new();
         protected override JsonIO<Employee> IO => _io;
-
         protected override string FilePath => "Data\\dataEmployee.json";
     }
 
@@ -87,52 +87,48 @@ namespace ProjectCaseStudy
             Fixture = fixture;
         }
 
-        public static IEnumerable<object[]>? GetData(int numTests)
-        {
-            throw new NotImplementedException();
-        }
-        [Theory]
-        [ClassData(typeof(TestDataJobTitle))]
-        public void Performance(JobTitleData data)
-        {
-            if (data == null) return;
+        //[Theory]
+        //[ClassData(typeof(TestDataJobTitle))]
+        //public void Performance(JobTitleData data)
+        //{
+        //    if (data == null) return;
 
-            //Navigate to job title
-            Actions mouseMove = new(Fixture.Driver);
-            var adminModule = Fixture.Driver.FindElement(By.Id("menu_admin_viewAdminModule"));
-            mouseMove.MoveToElement(adminModule).Perform();
-            var adminJob = Fixture.Driver.FindElement(By.Id("menu_admin_Job"));
-            mouseMove.MoveToElement(adminJob).Perform();
-            Fixture.Driver.FindElement(By.Id("menu_admin_viewJobTitleList")).Click();
+        //    //Navigate to job title
+        //    Actions mouseMove = new(Fixture.Driver);
+        //    var adminModule = Fixture.Driver.FindElement(By.Id("menu_admin_viewAdminModule"));
+        //    mouseMove.MoveToElement(adminModule).Perform();
+        //    var adminJob = Fixture.Driver.FindElement(By.Id("menu_admin_Job"));
+        //    mouseMove.MoveToElement(adminJob).Perform();
+        //    Fixture.Driver.FindElement(By.Id("menu_admin_viewJobTitleList")).Click();
 
-            Fixture.Driver.FindElement(By.Id("btnAdd")).Click();
-            Fixture.Driver.FindElement(By.Id("jobTitle_jobTitle")).Click();
-            Fixture.Driver.FindElement(By.Id("jobTitle_jobTitle")).SendKeys(data.Title);
-            Fixture.Driver.FindElement(By.Id("jobTitle_jobDescription")).Click();
-            Fixture.Driver.FindElement(By.Id("jobTitle_jobDescription")).SendKeys(data.Description);
-            //Fixture.Driver.FindElement(By.Id("jobTitle_jobSpec")).Click(); => cause error (can't click)
-            Fixture.Driver.FindElement(By.Id("jobTitle_jobSpec")).SendKeys(data.File);
-            Fixture.Driver.FindElement(By.Id("jobTitle_note")).Click();
-            Fixture.Driver.FindElement(By.Id("jobTitle_note")).SendKeys(data.Note);
-            Fixture.Driver.FindElement(By.Id("btnSave")).Click();
-        }
+        //    Fixture.Driver.FindElement(By.Id("btnAdd")).Click();
+        //    Fixture.Driver.FindElement(By.Id("jobTitle_jobTitle")).Click();
+        //    Fixture.Driver.FindElement(By.Id("jobTitle_jobTitle")).SendKeys(data.Title);
+        //    Fixture.Driver.FindElement(By.Id("jobTitle_jobDescription")).Click();
+        //    Fixture.Driver.FindElement(By.Id("jobTitle_jobDescription")).SendKeys(data.Description);
+        //    //Fixture.Driver.FindElement(By.Id("jobTitle_jobSpec")).Click(); => cause error (can't click)
+        //    Fixture.Driver.FindElement(By.Id("jobTitle_jobSpec")).SendKeys(data.File);
+        //    Fixture.Driver.FindElement(By.Id("jobTitle_note")).Click();
+        //    Fixture.Driver.FindElement(By.Id("jobTitle_note")).SendKeys(data.Note);
+        //    Fixture.Driver.FindElement(By.Id("btnSave")).Click();
+        //}
 
 
-        [Theory]
-        [ClassData(typeof(TestDataBuzz))]
-        public void BuzzUpload(BuzzPost data)
-        {
-            Fixture.Driver.Navigate().GoToUrl("http://localhost/orangehrm/symfony/web/index.php/buzz/viewBuzz");
-            Fixture.Driver.FindElement(By.Id("images-tab-label")).Click();
-            Fixture.Driver.FindElement(By.Id("phototext")).Click();
-            Fixture.Driver.FindElement(By.Id("phototext")).SendKeys(data.Content);
-            //Fixture.Driver.FindElement(By.Id("image-upload-button")).Click();
-            for(int i = 0; i < data.Images.Length; i++)
-            {
-                Fixture.Driver.FindElement(By.Id("photofile")).SendKeys(data.Images[i]);
-            }
-            Fixture.Driver.FindElement(By.Id("imageUploadBtn")).Click();
-        }
+        //[Theory]
+        //[ClassData(typeof(TestDataBuzz))]
+        //public void BuzzUpload(BuzzPost data)
+        //{
+        //    Fixture.Driver.Navigate().GoToUrl("http://localhost/orangehrm/symfony/web/index.php/buzz/viewBuzz");
+        //    Fixture.Driver.FindElement(By.Id("images-tab-label")).Click();
+        //    Fixture.Driver.FindElement(By.Id("phototext")).Click();
+        //    Fixture.Driver.FindElement(By.Id("phototext")).SendKeys(data.Content);
+        //    //Fixture.Driver.FindElement(By.Id("image-upload-button")).Click();
+        //    for(int i = 0; i < data.Images.Length; i++)
+        //    {
+        //        Fixture.Driver.FindElement(By.Id("photofile")).SendKeys(data.Images[i]);
+        //    }
+        //    Fixture.Driver.FindElement(By.Id("imageUploadBtn")).Click();
+        //}
 
         [Theory]
         [ClassData(typeof(TestDataEmployee))]
@@ -149,12 +145,20 @@ namespace ProjectCaseStudy
             Fixture.Driver.FindElement(By.Id("employeeId")).Click();
             Fixture.Driver.FindElement(By.Id("employeeId")).SendKeys(data.ID);
             Fixture.Driver.FindElement(By.Id("chkLogin")).Click();
-            Fixture.Driver.FindElement(By.Id("user_name")).Click();
-            Fixture.Driver.FindElement(By.Id("user_name")).SendKeys("username");
+            try
+            {
+                Fixture.Driver.FindElement(By.Id("user_name")).Click();
+            }
+            catch
+            {
+                Fixture.Driver.FindElement(By.Id("chkLogin")).Click();
+                Fixture.Driver.FindElement(By.Id("user_name")).Click();
+            }
+            Fixture.Driver.FindElement(By.Id("user_name")).SendKeys(data.Username);
             Fixture.Driver.FindElement(By.Id("user_password")).Click();
-            Fixture.Driver.FindElement(By.Id("user_password")).SendKeys("Quanghuy@2807");
+            Fixture.Driver.FindElement(By.Id("user_password")).SendKeys(data.Password);
             Fixture.Driver.FindElement(By.Id("re_password")).Click();
-            Fixture.Driver.FindElement(By.Id("re_password")).SendKeys("Quanghuy@2807");
+            Fixture.Driver.FindElement(By.Id("re_password")).SendKeys(data.Password);
             Fixture.Driver.FindElement(By.Id("btnSave")).Click();
         }
     }
@@ -162,6 +166,13 @@ namespace ProjectCaseStudy
     public class ChromeTest : SuiteTests<ConfigurationChromeFixture>
     {
         public ChromeTest(ConfigurationChromeFixture fixture) : base(fixture)
+        {
+        }
+    }
+
+    public class ChromeTest2 : SuiteTests<ConfigurationChromeFixture>
+    {
+        public ChromeTest2(ConfigurationChromeFixture fixture) : base(fixture)
         {
         }
     }

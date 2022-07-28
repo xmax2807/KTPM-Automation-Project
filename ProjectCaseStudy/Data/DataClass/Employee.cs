@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace ProjectCaseStudy.Data
         }
         public Employee(int id, string firstname, string lastname, string username, string password)
         {
-            ID = "000" + id;
+            ID = "employee " + id;
             FirstName = firstname;
             LastName = lastname;
             Username = username;
@@ -32,15 +33,13 @@ namespace ProjectCaseStudy.Data
         }
         public List<Employee> GetGenerateList(int take)
         {
-            string[] firstname = new string[5];
-            string[] lastname = new string[5];
-            string[] username = new string[5];
+            string[] username = File.ReadAllLines("Data\\randomCharacters.txt");
             const string password = "Quanghuy@2807";
 
             var result = new List<Employee>();
             for(int i = 0; i < take; i++)
             {
-                result.Add(new Employee(i + 1));
+                result.Add(new Employee(i + 1, "Quang", "Huy", username[i], password));
             }
             return result;
         }

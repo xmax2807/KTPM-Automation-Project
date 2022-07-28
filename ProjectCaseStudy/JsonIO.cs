@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using ProjectCaseStudy.Data;
 using System.Text.Json.Serialization;
@@ -10,7 +11,7 @@ namespace ProjectCaseStudy
     public abstract class JsonIO<T>
     {
         protected abstract Generator<T> _generator { get; }
-        public List<T>? LoadFile(string filePath)
+        public List<T>? LoadFile(string filePath, int numbers = 1000)
         {
             try
             {
@@ -19,7 +20,7 @@ namespace ProjectCaseStudy
             }
             catch
             {
-                return SerializeToFile(filePath,1000);
+                return SerializeToFile(filePath,numbers);
             }
         }
 
@@ -64,7 +65,7 @@ namespace ProjectCaseStudy
         
         public EmployeeIO()
         {
-            _factory = new EmployeeFactory()
+            _factory = new EmployeeFactory();
         }
     }
 }
