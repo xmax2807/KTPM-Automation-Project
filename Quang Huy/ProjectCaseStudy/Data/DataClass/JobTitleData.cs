@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -26,7 +27,7 @@ namespace ProjectCaseStudy.Data
         {
             Title = "job " + id;
             Description = "Desciption";
-            File = "D:/bin/Study/Y3/HK3/Testing/Project/Automation/ProjectCaseStudy/ProjectCaseStudy/Data/1.gif";
+            File = Path.Combine(Directory.GetCurrentDirectory(), "Data\\1.gif");
             Note = "Note";
         }
 

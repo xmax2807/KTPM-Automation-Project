@@ -1,0 +1,35 @@
+Reproducibility	Severity	Priority	Summary	Description	Steps	Addition
+always	minor	normal	Video uploading issue	Paste valid url but can't upload the video after empty the link	"Login as any user
+Navigate to Buzz -> Share Video
+Paste a link from youtube ""https://youtu.be/p8u_k2LIZyo""
+Then empty this link
+Click ""Upload"" video"	"Expected: Video will be uploaded with saved link.
+Issue (Actual Result): Can't upload and return a paste field not video."
+always	major	high	Work Shift Asignment Issue	Can't assign lots of employees (1000 employees) (it has limit)	"Login as Admin
+Navigate to Admin -> Job -> Work Shifts
+Click ""Add"" to add a work shift
+Select all available employees and assign to this work shift
+Do one more time"	"Expected: The list available employee won't contain any assigned employee.
+Issue (Actual Result): The list doesn't update which means can't assign another 1000 employees."
+always	minor	normal	Performance in loading list employee in Work shift	Slow on loading while using the Work Shift feature	"Login as Admin
+Navigate to Admin -> Job -> Work Shifts
+Click any Button (e.g. Add button)"	"Expected:
+Issue (Actual Result): Slow load (5s)"
+always	minor	normal				"Expected:
+Issue (Actual Result):"
+always	minor	normal				"Expected:
+Issue (Actual Result):"
+always	minor	normal				"Expected:
+Issue (Actual Result):"
+always	minor	normal				"Expected:
+Issue (Actual Result):"
+always	minor	normal				"Expected:
+Issue (Actual Result):"
+always	minor	normal				"Expected:
+Issue (Actual Result):"
+always	minor	normal				"Expected:
+Issue (Actual Result):"
+always	minor	normal				"Expected:
+Issue (Actual Result):"
+always	minor	normal				"Expected:
+Issue (Actual Result):"

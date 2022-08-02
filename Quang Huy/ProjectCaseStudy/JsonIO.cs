@@ -68,4 +68,15 @@ namespace ProjectCaseStudy
             _factory = new EmployeeFactory();
         }
     }
+
+    public class AccountIO : JsonIO<Account>
+    {
+        private AccountFactory _factory;
+        protected override Generator<Account> _generator => _factory;
+
+        public AccountIO()
+        {
+            _factory = new AccountFactory();
+        }
+    }
 }

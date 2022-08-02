@@ -20,7 +20,7 @@ namespace ProjectCaseStudy.Data
             Images = new string[2] { path, path };
             Content = "Disciple";
         }
-        public List<BuzzPost> GetGenerateList(int take)
+        List<BuzzPost> IData<BuzzPost>.GetGenerateList(int take)
         {
             List<BuzzPost> result = new(take);
             for(int i = 0; i < take; i++)

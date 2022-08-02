@@ -23,18 +23,23 @@ namespace ProjectCaseStudy.Data
     public class JobTitleFactory : Generator<JobTitleData>
     {
 
-        public override IData<JobTitleData> CreateInstance() => new JobTitleData();
+        public override JobTitleData CreateInstance() => new JobTitleData();
         
     }
 
     public class BuzzPostFactory : Generator<BuzzPost>
     {
-        public override IData<BuzzPost> CreateInstance() => new BuzzPost();
+        public override BuzzPost CreateInstance() => new BuzzPost();
         
     }
 
     public class EmployeeFactory : Generator<Employee>
     {
-        public override IData<Employee> CreateInstance() => new Employee();
+        public override Employee CreateInstance() => new Employee();
+    }
+
+    public class AccountFactory : Generator<Account>
+    {
+        public override Account CreateInstance() => new Account();
     }
 }

@@ -25,7 +25,7 @@ namespace ProjectCaseStudy.Data
         }
         public Employee(int id, string firstname, string lastname, string username, string password)
         {
-            ID = "employee " + id;
+            ID = "9" + id;
             FirstName = firstname;
             LastName = lastname;
             Username = username;
@@ -37,9 +37,39 @@ namespace ProjectCaseStudy.Data
             const string password = "Quanghuy@2807";
 
             var result = new List<Employee>();
-            for(int i = 0; i < take; i++)
+            int n = Math.Min(take, username.Length);
+            for(int i = 0; i < n; i++)
             {
                 result.Add(new Employee(i + 1, "Quang", "Huy", username[i], password));
+            }
+            return result;
+        }
+    }
+
+    public class Account : IData<Account>
+    {
+        public string EmployeeName { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+        public Account()
+        {
+            EmployeeName = "";
+            Username = "";
+            Password = "";
+        }
+        public Account(int id)
+        {
+            EmployeeName = "Admin 1";
+            Username = "admin0" + id;
+            Password = "Quanghuy@2807";
+        }
+        public List<Account> GetGenerateList(int take)
+        {
+            var result = new List<Account>(take);
+            for(int i = 1; i <= take; i++)
+            {
+                result.Add(new Account(i));
             }
             return result;
         }
