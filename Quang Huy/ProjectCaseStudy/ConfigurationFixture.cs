@@ -7,44 +7,35 @@ using OpenQA.Selenium.Firefox;
 
 namespace ProjectCaseStudy
 {
-    public enum Browser
+    
+    public abstract class FixtureBase<T> : IDisposable where T : Browser
     {
-        CHROME, FIREFOX
-    }
-    public abstract class ConfigurationFixture : IDisposable
-    {
-        protected abstract Browser Browser { get; }
-        protected IWebDriver? _driver;
-        public IWebDriver Driver {
-            get
-            {
-                if (_driver == null)
-                {
-                    switch (Browser)
-                    {
-                        case Browser.CHROME: 
-                            _driver = new ChromeDriver(_driverPath, new ChromeOptions { Proxy = null }); 
-                            break;
-                        case Browser.FIREFOX:
-                            _driver = new FirefoxDriver(_driverPath, new FirefoxOptions { Proxy = null });
-                            break;
-                    }
-                    _driver?.Manage().Window.Maximize();
-                }
-                return _driver;
-            }
-            set { _driver = value; }
+        public IWebDriver? Driver {
+            get => Browser?.Driver;
         }
-        protected abstract string _driverPath { get; }
-        public IDictionary<string, object> vars { get; private set; }
-        public IJavaScriptExecutor js { get; private set; }
 
-        protected virtual void SettingUp() { }
-        public ConfigurationFixture()
+        private T? _browser;
+        public T? Browser
         {
-            js = (IJavaScriptExecutor)Driver;
+            get => _browser; 
+            set
+            {
+                if (_browser != null) return;
+                
+                _browser = value;
+                SettingUp();
+            }
+        }
+
+        public IDictionary<string, object> vars { get; private set; }
+        public IJavaScriptExecutor? js { get; private set; }
+
+        protected virtual void SettingUp() {
+        }
+        public FixtureBase()
+        {
+            js = Driver as IJavaScriptExecutor;
             vars = new Dictionary<string, object>();
-            SettingUp();
         }
 
         public void Dispose()
@@ -70,27 +61,15 @@ namespace ProjectCaseStudy
         }
     }
 
-    public class ConfigurationChromeFixture : ConfigurationFixture
-    {
-        protected override string _driverPath => "Driver";
-
-        protected override Browser Browser => Browser.CHROME;
-    }
-
-    public class ConfigurationFirefoxFixture : ConfigurationFixture
-    {
-       
-        protected override string _driverPath => "Driver";
-
-        protected override Browser Browser => Browser.FIREFOX;
-    }
-
-    public class ChromeConfigurationTestSuite1 : ConfigurationChromeFixture
+    public class TestSuite1Fixture<T> : FixtureBase<T> where T : Browser
     {
         private const string _username = "xmax2807";
         private const string _password = "Quanghuy@2807";
+
+        
         protected override void SettingUp()
         {
+            if (Driver == null) { return; }
             //Open web and set up
             Driver.Navigate().GoToUrl("http://localhost/orangehrm/symfony/web/index.php/auth/login");
 
@@ -100,7 +79,28 @@ namespace ProjectCaseStudy
             Driver.FindElement(By.Id("txtPassword")).Click();
             Driver.FindElement(By.Id("txtPassword")).SendKeys(_password);
             Driver.FindElement(By.Id("txtPassword")).SendKeys(Keys.Enter);
+        }
+    }
 
+    public class BugReportFixture<T> : FixtureBase<T> where T : Browser
+    {
+        private const string WebURL = "https://cs.hcmus.edu.vn/mantisbt/login_page.php";
+        private const string _username = "2022.CLC.Team02.19127425";
+        private const string _password = "Quanghuy2807";
+        protected override void SettingUp()
+        {
+            if (Driver == null) { return; }
+
+            Driver.Navigate().GoToUrl(WebURL);
+            Driver.FindElement(By.Name("username")).SendKeys(_username);
+            Driver.FindElement(By.Name("password")).Click();
+            Driver.FindElement(By.Name("password")).SendKeys(_password);
+            Driver.FindElement(By.Name("password")).SendKeys(Keys.Enter);
+            Driver.FindElement(By.Name("project_id")).Click();
+            {
+                var dropdown = Driver.FindElement(By.Name("project_id"));
+                dropdown.FindElement(By.XPath("//option[. = '19CLC.Team02']")).Click();
+            }
         }
     }
 }

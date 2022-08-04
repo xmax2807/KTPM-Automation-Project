@@ -88,7 +88,7 @@ namespace ProjectCaseStudy
         protected override string FilePath => "Data\\dataAccount.json";
     }
 
-    public abstract class SuiteTests<T> : IClassFixture<T> where T : ConfigurationFixture
+    public abstract class SuiteTests<T, V> : IClassFixture<T> where T : FixtureBase<V> where V : Browser
     {
         private readonly T Fixture;
         public SuiteTests(T fixture)
@@ -104,13 +104,13 @@ namespace ProjectCaseStudy
             if (data == null) return;
             try
             {
-                Fixture.Driver.FindElement(By.Id("btnAdd")).Click();
+                Fixture.Driver?.FindElement(By.Id("btnAdd")).Click();
             }
             catch
             {
                 //Navigate to job title
                 Actions mouseMove = new(Fixture.Driver);
-                var adminModule = Fixture.Driver.FindElement(By.Id("menu_admin_viewAdminModule"));
+                var adminModule = Fixture.Driver?.FindElement(By.Id("menu_admin_viewAdminModule"));
                 mouseMove.MoveToElement(adminModule).Perform();
                 var adminJob = Fixture.Driver.FindElement(By.Id("menu_admin_Job"));
                 mouseMove.MoveToElement(adminJob).Perform();
@@ -267,17 +267,19 @@ namespace ProjectCaseStudy
         }
     }
 
-    public class ChromeTest : SuiteTests<ChromeConfigurationTestSuite1>
+    public class ChromeTest : SuiteTests<TestSuite1Fixture<Chrome>, Chrome>
     {
-        public ChromeTest(ChromeConfigurationTestSuite1 fixture) : base(fixture)
+        public ChromeTest(TestSuite1Fixture<Chrome> fixture) : base(fixture)
         {
+            fixture.Browser = new Chrome();
         }
     }
 
-    public class ChromeTest2 : SuiteTests<ChromeConfigurationTestSuite1>
+    public class ChromeTest2 : SuiteTests<TestSuite1Fixture<Firefox>, Firefox>
     {
-        public ChromeTest2(ChromeConfigurationTestSuite1 fixture) : base(fixture)
+        public ChromeTest2(TestSuite1Fixture<Firefox> fixture) : base(fixture)
         {
+            fixture.Browser = new Firefox();
         }
     }
 }

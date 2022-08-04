@@ -9,29 +9,13 @@ using Xunit;
 
 namespace ProjectCaseStudy
 {
-    public abstract class BugReport<T> : IClassFixture<T> where T : ConfigurationFixture
+    public class BugReport : IClassFixture<BugReportFixture<Chrome>>
     {
-        private const string WebURL = "https://cs.hcmus.edu.vn/mantisbt/login_page.php";
-        private const string _username = "2022.CLC.Team02.19127425";
-        private const string _password = "Quanghuy2807";
-        private readonly T Fixture;
-        public BugReport(T fixture)
+        
+        private readonly BugReportFixture<Chrome> Fixture;
+        public BugReport(BugReportFixture<Chrome> fixture)
         {
             Fixture = fixture;
-            Setup_Login(_username, _password);
-        }
-
-        private void Setup_Login(string username, string password) {
-            Fixture.Driver.Navigate().GoToUrl(WebURL);
-            Fixture.Driver.FindElement(By.Name("username")).SendKeys(username);
-            Fixture.Driver.FindElement(By.Name("password")).Click();
-            Fixture.Driver.FindElement(By.Name("password")).SendKeys(password);
-            Fixture.Driver.FindElement(By.Name("password")).SendKeys(Keys.Enter);
-            Fixture.Driver.FindElement(By.Name("project_id")).Click();
-            {
-                var dropdown = Fixture.Driver.FindElement(By.Name("project_id"));
-                dropdown.FindElement(By.XPath("//option[. = '19CLC.Team02']")).Click();
-            }
         }
 
         private static List<object[]> ReadFile(string filePath)
@@ -96,13 +80,6 @@ namespace ProjectCaseStudy
             Fixture.Driver.FindElement(By.Name("additional_info")).Click();
             Fixture.Driver.FindElement(By.Name("additional_info")).SendKeys($"{data.Addition}");
             Fixture.Driver.FindElement(By.CssSelector(".button")).Click();
-        }
-    }
-
-    public class BugReport : BugReport<ConfigurationChromeFixture>
-    {
-        public BugReport(ConfigurationChromeFixture fixture) : base(fixture)
-        {
         }
     }
 }

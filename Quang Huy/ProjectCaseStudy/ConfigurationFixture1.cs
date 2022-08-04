@@ -1,6 +1,6 @@
 ﻿namespace ProjectCaseStudy
 {
-    public class ConfigurationFixture<T>
+    public class Browser<T>
     {
     }
 }
