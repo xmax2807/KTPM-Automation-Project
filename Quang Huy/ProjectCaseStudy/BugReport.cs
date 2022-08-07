@@ -9,13 +9,14 @@ using Xunit;
 
 namespace ProjectCaseStudy
 {
-    public class BugReport : IClassFixture<BugReportFixture<Chrome>>
+    public class BugReport : IClassFixture<BugReportFixture>
     {
         
-        private readonly BugReportFixture<Chrome> Fixture;
-        public BugReport(BugReportFixture<Chrome> fixture)
+        private readonly BugReportFixture Fixture;
+        public BugReport(BugReportFixture fixture)
         {
             Fixture = fixture;
+            Fixture.Browser = new Chrome();
         }
 
         private static List<object[]> ReadFile(string filePath)
@@ -26,22 +27,24 @@ namespace ProjectCaseStudy
 
             var data = System.IO.File.ReadAllLines(filePath);
 
-            for (int i = 1; i < data.Length; i++)
+            for (int i = 0; i < data.Length; i++)
             {
                 var dataclass = BugReportData.Parse(data[i], ",");
                 if (dataclass == null) continue;
-                result[i] = new object[] { dataclass };
+                result.Add(new object[] { dataclass });
             }
 
             return result;
         }
 
-        private const string filePath = "Data\\bug_port.csv";
-        public static IEnumerable<object[]> GetData()
+        private const string filePath = "Data\\bug_report.txt";
+        public static IEnumerable<object[]> GetData(int take)
         {
-            return ReadFile(filePath);
+            return ReadFile(filePath).Take(take);
         }
 
+        [Theory]
+        [MemberData(nameof(GetData), parameters: 1)]
         public void AddBugReport(BugReportData data)
         {
             Fixture.Driver.FindElement(By.LinkText("Report Issue")).Click();

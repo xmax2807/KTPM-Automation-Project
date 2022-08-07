@@ -1,0 +1,11 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1659844670978,268,-40,200,OK,Thread Group 1-1,text,true,,38830,566,1,1,https://localhost/orangehrm/symfony/web/index.php/auth/login,267,0,12
+1659844671246,1249,-41,200,OK,Thread Group 1-1,text,true,,61246,1570,1,1,https://localhost/orangehrm/symfony/web/index.php/dashboard,552,0,0
+1659844671246,552,-41-0,302,Found,Thread Group 1-1,text,true,,767,873,1,1,https://localhost/orangehrm/symfony/web/index.php/auth/validateCredentials,552,0,0
+1659844671798,697,-41-1,200,OK,Thread Group 1-1,text,true,,60479,697,1,1,https://localhost/orangehrm/symfony/web/index.php/dashboard,695,0,0
+1659844672495,783,-45,200,OK,Thread Group 1-1,text,true,,543841,626,1,1,https://localhost/orangehrm/symfony/web/index.php/admin/workShift,777,0,0
+1659844673281,340,-47,200,OK,Thread Group 1-1,text,true,,65057,589,1,1,https://localhost/orangehrm/symfony/web/index.php/admin/getWorkShiftEmpInfoJson/id/4,338,0,0
+1659844673622,345,-46,200,OK,Thread Group 1-1,text,true,,546,586,1,1,https://localhost/orangehrm/symfony/web/index.php/admin/getWorkShiftInfoJson/id/4,345,0,0
+1659844673967,1229,-48,400,Bad Request,Thread Group 1-1,text,false,,544192,186986,1,1,https://localhost/orangehrm/symfony/web/index.php/admin/workShift,1222,0,0
+1659844675198,858,-49,200,OK,Thread Group 1-1,text,true,,543842,632,1,1,https://localhost/orangehrm/symfony/web/index.php/admin/workShift,852,0,5
+1659844676057,266,-46,200,OK,Thread Group 1-1,text,true,,546,586,1,1,https://localhost/orangehrm/symfony/web/index.php/admin/getWorkShiftInfoJson/id/4,266,0,0

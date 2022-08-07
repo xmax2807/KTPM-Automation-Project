@@ -38,7 +38,7 @@ namespace ProjectCaseStudy
 
     public class JobTitleIO : JsonIO<JobTitleData>
     {
-        private JobTitleFactory _factory;
+        private readonly JobTitleFactory _factory;
         protected override Generator<JobTitleData> _generator => _factory;
 
         public JobTitleIO()
@@ -49,7 +49,7 @@ namespace ProjectCaseStudy
 
     public class BuzzPostIO: JsonIO<BuzzPost>
     {
-        private BuzzPostFactory _factory;
+        private readonly BuzzPostFactory _factory;
         protected override Generator<BuzzPost> _generator => _factory;
 
         public BuzzPostIO()
@@ -60,7 +60,7 @@ namespace ProjectCaseStudy
 
     public class EmployeeIO : JsonIO<Employee>
     {
-        private EmployeeFactory _factory;
+        private readonly EmployeeFactory _factory;
         protected override Generator<Employee> _generator => _factory;
         
         public EmployeeIO()
@@ -71,12 +71,22 @@ namespace ProjectCaseStudy
 
     public class AccountIO : JsonIO<Account>
     {
-        private AccountFactory _factory;
+        private readonly AccountFactory _factory;
         protected override Generator<Account> _generator => _factory;
 
         public AccountIO()
         {
             _factory = new AccountFactory();
+        }
+    }
+
+    public class BugReportIO : JsonIO<BugReportData>
+    {
+        private readonly BugReportFactory _factory;
+        protected override Generator<BugReportData> _generator => _factory;
+        public BugReportIO()
+        {
+            _factory = new BugReportFactory();
         }
     }
 }

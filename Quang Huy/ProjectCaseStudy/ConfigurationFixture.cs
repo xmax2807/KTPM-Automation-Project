@@ -8,14 +8,14 @@ using OpenQA.Selenium.Firefox;
 namespace ProjectCaseStudy
 {
     
-    public abstract class FixtureBase<T> : IDisposable where T : Browser
+    public abstract class FixtureBase : IDisposable
     {
         public IWebDriver? Driver {
             get => Browser?.Driver;
         }
 
-        private T? _browser;
-        public T? Browser
+        private Browser? _browser;
+        public Browser? Browser
         {
             get => _browser; 
             set
@@ -44,24 +44,26 @@ namespace ProjectCaseStudy
  
             // Delete temp files after completing the test and closing the Browser
             // source: https://stackoverflow.com/questions/43289035/chromedriver-not-deleting-scoped-dir-in-temp-folder-after-test-is-complete
-            string tempfolder = Path.GetTempPath();
-            string[] tempfiles = Directory.GetDirectories(tempfolder, "scoped_dir*", SearchOption.AllDirectories);
-            foreach (string tempfile in tempfiles)
+            
+            try
             {
-                try
+                string tempfolder = Path.GetTempPath();
+                string[] tempfiles = Directory.GetDirectories(tempfolder, "scoped_dir*", SearchOption.AllDirectories);
+                foreach (string tempfile in tempfiles)
                 {
                     DirectoryInfo directory = new(tempfolder);
                     foreach (DirectoryInfo subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
+
                 }
-                catch
-                {
-                    // could not delete folders
-                }
+            }
+            catch
+            {
+                // could not delete folders
             }
         }
     }
 
-    public class TestSuite1Fixture<T> : FixtureBase<T> where T : Browser
+    public class TestSuite1Fixture : FixtureBase
     {
         private const string _username = "xmax2807";
         private const string _password = "Quanghuy@2807";
@@ -82,7 +84,7 @@ namespace ProjectCaseStudy
         }
     }
 
-    public class BugReportFixture<T> : FixtureBase<T> where T : Browser
+    public class BugReportFixture : FixtureBase
     {
         private const string WebURL = "https://cs.hcmus.edu.vn/mantisbt/login_page.php";
         private const string _username = "2022.CLC.Team02.19127425";

@@ -42,4 +42,9 @@ namespace ProjectCaseStudy.Data
     {
         public override Account CreateInstance() => new Account();
     }
+
+    public class BugReportFactory : Generator<BugReportData>
+    {
+        public override BugReportData CreateInstance() => new BugReportData();
+    }
 }
