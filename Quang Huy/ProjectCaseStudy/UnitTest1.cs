@@ -13,7 +13,7 @@ using Xunit;
 
 namespace ProjectCaseStudy
 {
-   
+
 
     public abstract class SuiteTests<T> : IClassFixture<T> where T : FixtureBase
     {
@@ -22,7 +22,7 @@ namespace ProjectCaseStudy
         {
             Fixture = fixture;
         }
-        
+
 
         [Theory]
         [ClassData(typeof(TestDataJobTitle))]
@@ -144,7 +144,8 @@ namespace ProjectCaseStudy
             Actions action = new Actions(Fixture.Driver);
             Fixture.Driver.FindElement(By.CssSelector("#menu_buzz_viewBuzz > b")).Click();
             int baseValue = 100, current = baseValue;
-            for (int i = num; i >= 1; i--){
+            for (int i = num; i >= 1; i--)
+            {
                 try
                 {
                     Fixture.Driver.FindElement(By.Id(i.ToString())).Click();
@@ -158,7 +159,8 @@ namespace ProjectCaseStudy
                     action.MoveToElement(obj).Click().Perform();
                     Thread.Sleep(2000);
                 }
-                catch {
+                catch
+                {
                     if (current == 0)
                     {
                         Fixture.Driver.FindElement(By.CssSelector("#menu_buzz_viewBuzz > b")).Click();
@@ -192,6 +194,34 @@ namespace ProjectCaseStudy
             Thread.Sleep(2000);
             Fixture.Driver.FindElement(By.Id("btnSave")).Click();
         }
+
+        [Fact]
+        public void LoadWorkShift()
+        {
+            Fixture.Driver.Navigate().GoToUrl("http://localhost/orangehrm/symfony/web/index.php/admin/workShift");
+            Thread.Sleep(500);
+            Fixture.Driver.FindElement(By.LinkText("asdasd")).Click();
+            {
+                var dropdown = Fixture.Driver.FindElement(By.Id("workShift_assignedEmp"));
+
+                bool rendered = false;
+
+                while (!rendered)
+                {
+                    try
+                    {
+                        dropdown.FindElement(By.XPath("//option[. = 'Quang QT2GBeIslXV9FLS3kwHqqtKHuv4U8t Huy']")).Click();
+                        rendered = true;
+                    }
+                    catch
+                    {
+                        rendered = false;
+                    }
+                }   
+            }
+            Fixture.Driver.FindElement(By.Id("btnSave")).Click();
+        }
+
     }
 
     public class ChromeTest : SuiteTests<TestSuite1Fixture>
